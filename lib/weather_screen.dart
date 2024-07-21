@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:weather_app/secrets.dart';
 import 'package:http/http.dart' as http;
 
@@ -49,9 +49,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              if (kDebugMode) {
-                print('refresh');
-              }
+              setState(() {});
             },
             icon: const Icon(Icons.refresh),
           ),
@@ -165,8 +163,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
                         final hourlyForecast = data['list'][index + 1];
                         final hourlySky =
                             data['list'][index + 1]['weather'][0]['main'];
+                        final time = DateTime.parse(hourlyForecast['dt_txt']);
                         return HourlyForecastItem(
-                          time: hourlyForecast['dt'].toString(),
+                          time: DateFormat.jm().format(time),
                           temperature:
                               hourlyForecast['main']['temp'].toString(),
                           icon: hourlySky == 'Clouds' || hourlySky == 'Rain'
